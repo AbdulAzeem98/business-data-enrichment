@@ -1,0 +1,60 @@
+{
+  "name": "Business Data Enrichment - Critical Error Notification (starter)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e1e2e3e4-0001-4000-8000-000000000001",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "REPLACE_WITH_YOUR_EMAIL",
+        "subject": "n8n business enrichment workflow failed",
+        "emailType": "text",
+        "message": "={{ 'Workflow: ' + ($json.workflow.name || 'unknown') + '\\nExecution: ' + ($json.execution.url || 'not available') + '\\nError: ' + ($json.execution.error.message || 'unknown error') }}",
+        "options": {}
+      },
+      "id": "e1e2e3e4-0002-4000-8000-000000000002",
+      "name": "Send Failure Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        500,
+        300
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "REPLACE_WITH_SMTP_CREDENTIAL_ID",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send Failure Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
